@@ -1,0 +1,179 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package Bank;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
+/**
+ *
+ * @author Original Shop
+ */
+public class AdminFrame extends javax.swing.JFrame {
+    /**
+     * Creates new form AdminFrame
+     */
+    public AdminFrame() {
+        initComponents();
+    }
+    String newAccountType ;
+	private JPanel contentPane;
+	private JTextField nameTextField;
+	private JTextField balanceTextField;
+	private JTextArea detailsArea ;
+
+
+	/**
+	 * Create the frame.
+	 */
+	public AdminFrame(Bank bank) {
+		bank.setName(bank.getName());
+
+		detailsArea = new JTextArea();
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 717, 363);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel newPanel = new JPanel();
+		newPanel.setBorder(new TitledBorder(null, "New Account", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		newPanel.setBounds(10, 43, 183, 277);
+		contentPane.add(newPanel);
+		newPanel.setLayout(null);
+		
+		nameTextField = new JTextField();
+		nameTextField.setBounds(92, 27, 81, 20);
+		newPanel.add(nameTextField);
+		nameTextField.setColumns(10);
+		
+		JLabel nameLabel = new JLabel("New name");
+		nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		nameLabel.setBounds(10, 27, 56, 20);
+		nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		newPanel.add(nameLabel);
+		
+		JLabel balanceLabel = new JLabel("New Balance");
+		balanceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		balanceLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		balanceLabel.setBounds(10, 84, 67, 20);
+		newPanel.add(balanceLabel);
+		
+		balanceTextField = new JTextField();
+		balanceTextField.setColumns(10);
+		balanceTextField.setBounds(92, 84, 81, 20);
+		newPanel.add(balanceTextField);
+		
+		JButton createButton = new JButton("Create new account");
+		createButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		createButton.setBounds(10, 187, 163, 23);
+		newPanel.add(createButton);
+		createButton.addActionListener((evt) -> {
+			nameTextField.requestFocus();
+			String name = nameTextField.getText();
+			String balanceStr = balanceTextField.getText();
+			Account newAccount = null;
+			if( (newAccountType == null) || 
+					(newAccountType.equals("Current")) ) {
+				newAccount = new CurrentAccount(name,Double.valueOf(balanceStr),100);
+			}
+			else {
+				newAccount = new SavingAccount(name,Double.valueOf(balanceStr),0.05);
+			}
+			bank.add(newAccount);
+			JOptionPane.showMessageDialog(null, "account added ");
+			refresh(bank.getAccounts(),detailsArea);
+		});
+		
+		JLabel lblAccount = new JLabel("Account");
+		lblAccount.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAccount.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblAccount.setBounds(10, 138, 67, 20);
+		newPanel.add(lblAccount);
+		
+		JComboBox<String> comboBox = new JComboBox<>();
+		comboBox.setModel(new DefaultComboBoxModel<String>(
+				new String[] {"Current", "Saving"})
+				);
+		comboBox.setBounds(92, 138, 81, 22);
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				newAccountType = (String) comboBox.getSelectedItem();			
+			}
+			
+		});
+		newPanel.add(comboBox);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener((e)->this.setVisible(false));
+		btnExit.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnExit.setBounds(95, 242, 78, 23);
+		newPanel.add(btnExit);
+		
+		
+		JLabel bankNameLabel = new JLabel(bank.getName()+" (Admin)");
+
+		bankNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		bankNameLabel.setBounds(173, 11, 396, 31);
+		bankNameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		contentPane.add(bankNameLabel);
+		
+		JPanel accountsPanel = new JPanel();
+		accountsPanel.setLayout(null);
+		accountsPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Accounts List", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		accountsPanel.setBounds(193, 43, 498, 277);
+		contentPane.add(accountsPanel);
+		
+		detailsArea.setFont(new Font("Verdana", Font.PLAIN, 12));
+		detailsArea.setBounds(10, 23, 478, 243);
+		accountsPanel.add(detailsArea);
+		refresh(bank.getAccounts(),detailsArea);
+	}
+/**
+ * 
+ * @param accounts
+ * @param textArea
+ */
+	private void refresh(List<Account> accounts, JTextArea textArea) {
+		detailsArea.setText("");
+		accounts.forEach((account) -> {
+			detailsArea.append(account+"\n");
+		});
+	}
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+}
